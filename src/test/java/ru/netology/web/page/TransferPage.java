@@ -16,11 +16,13 @@ public class TransferPage {
     private final SelenideElement amountField = $("[data-test-id='amount'] input");
     private final SelenideElement transferFromField = $("[data-test-id=from] input");
     private final SelenideElement buttonToTransfer = $("[data-test-id=action-transfer]");
-    public static SelenideElement errorMessage = $("[data-test-id=error-notification]");
+    private static SelenideElement errorMessage = $("[data-test-id=error-notification]");
 
     public TransferPage() {
         amountField.should(Condition.visible, Duration.ofSeconds(15));
     }
+
+
 
     public DashBoardPage validTransfer(int amount, DataHelper.CardInfo secondCard) {
         transfer(amount, secondCard);
@@ -31,16 +33,15 @@ public class TransferPage {
         amountField.setValue(String.valueOf(amount));
         transferFromField.setValue(String.valueOf(fromCard.getNumber()));
         buttonToTransfer.click();
-
-
     }
-
 
     public void checkErrorMessage(String errorText) {
         errorMessage.should(Condition.visible).shouldHave(Condition.text(errorText));
     }
 
-    public void transfer(String s, DataHelper.CardInfo fromCard) {
+    public void shouldSeeErrorMessage(String expectedText) {
+        errorMessage.shouldBe(Condition.visible, Duration.ofSeconds(15));
+        errorMessage.shouldHave(Condition.text(expectedText));
     }
 
 }
