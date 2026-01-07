@@ -40,9 +40,9 @@ public class DashBoardPage {
         return extractBalance(text);
     }
 
-    public Transfer cardSelection(DataHelper.CardInfo cardInfo) {
+    public TransferPage cardSelection(DataHelper.CardInfo cardInfo) {
         getCardElement(cardInfo).$("[data-test-id=action-deposit]").click();
-        return new Transfer();
+        return new TransferPage();
     }
 
 }
