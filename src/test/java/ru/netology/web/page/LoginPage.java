@@ -23,8 +23,4 @@ public class LoginPage {
         loginButton.click();
     }
 
-    public void checkErrorMessage(String expectedText) {
-        errorMessage.should(Condition.visible).should(Condition.text(expectedText));
-    }
-
 }

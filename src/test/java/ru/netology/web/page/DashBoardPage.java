@@ -15,14 +15,14 @@ public class DashBoardPage {
     private ElementsCollection cards = $$(".list__item div");
     private final String balanceStart = "баланс: ";
     private final String balanceFinish = " р.";
-
+    private final SelenideElement firstCard = $("[data-test-id='92df3f1c-a033-48e6-8390-206f6b1f56c0']");
+    private final SelenideElement secondCard = $("[data-test-id='0f3f5c2a-249e-4c3d-8287-09f7a039391d']");
+    private final SelenideElement firstCardChoice = $("[data-test-id='92df3f1c-a033-48e6-8390-206f6b1f56c0'] button");
+    private final SelenideElement secondCardChoice = $("[data-test-id='0f3f5c2a-249e-4c3d-8287-09f7a039391d'] button");
 
     public DashBoardPage() {
         header.should(Condition.visible);
-
-
     }
-
 
     private int extractBalance(String text) {
         var start = text.indexOf(balanceStart);
@@ -31,18 +31,34 @@ public class DashBoardPage {
         return Integer.parseInt(value);
     }
 
-    private SelenideElement getCardElement(DataHelper.CardInfo cardInfo) {
-        return cards.find(Condition.attribute("data-test-id", cardInfo.getTestId()));
-    }
+    public int getCardBalance(int card) {
 
-    public int getCardBalance(DataHelper.CardInfo cardInfo) {
-        var text = getCardElement(cardInfo).getText();
+        String text;
+        if (card == 1) {
+            text = firstCard.getText();
+        } else if (card == 2) {
+            text = secondCard.getText();
+        } else {
+            throw new IllegalArgumentException("Несуществующий номер карты: " + card);
+        }
         return extractBalance(text);
     }
 
-    public TransferPage cardSelection(DataHelper.CardInfo cardInfo) {
-        getCardElement(cardInfo).$("[data-test-id=action-deposit]").click();
+    public TransferPage cardSelection(int card) {
+
+        if (card == 1) {
+            firstCardChoice.click();
+        } else if (card == 2) {
+            secondCardChoice.click();
+        } else {
+            throw new IllegalArgumentException("Несуществующий номер карты: " + card);
+        }
         return new TransferPage();
     }
 
+    public void renewCardBalances() {
+        $("[data-test-id=action-reload]").click();
+    }
 }
+
+
