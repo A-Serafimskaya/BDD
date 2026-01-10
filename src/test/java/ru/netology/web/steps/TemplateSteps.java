@@ -19,14 +19,13 @@ public class TemplateSteps {
     private static DashBoardPage dashBoardPage;
     private static TransferPage transferPage;
 
-    String verificationCode = "12345";
 
     @Пусть("пользователь залогинен с именем {string} и паролем {string}")
     public void logInValidationAndGettingDashBoard(String login, String password) {
         loginPage = Selenide.open("http://localhost:9999", LoginPage.class);
         DataHelper.AuthInfo info = new DataHelper.AuthInfo(login, password);
         verificationPage = loginPage.validLogin(info);
-        dashBoardPage = verificationPage.validVerify(verificationCode);
+        dashBoardPage = verificationPage.validVerify(String.valueOf(DataHelper.getVerificationCodeFor(info)));
     }
 
     @Когда("пользователь переводит {string} рублей с карты с номером {string} на свою {int} карту с главной страницы")

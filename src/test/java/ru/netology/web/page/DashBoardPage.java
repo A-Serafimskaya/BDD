@@ -15,10 +15,7 @@ public class DashBoardPage {
     private ElementsCollection cards = $$(".list__item div");
     private final String balanceStart = "баланс: ";
     private final String balanceFinish = " р.";
-    private final SelenideElement firstCard = $("[data-test-id='92df3f1c-a033-48e6-8390-206f6b1f56c0']");
-    private final SelenideElement secondCard = $("[data-test-id='0f3f5c2a-249e-4c3d-8287-09f7a039391d']");
-    private final SelenideElement firstCardChoice = $("[data-test-id='92df3f1c-a033-48e6-8390-206f6b1f56c0'] button");
-    private final SelenideElement secondCardChoice = $("[data-test-id='0f3f5c2a-249e-4c3d-8287-09f7a039391d'] button");
+
 
     public DashBoardPage() {
         header.should(Condition.visible);
@@ -32,27 +29,13 @@ public class DashBoardPage {
     }
 
     public int getCardBalance(int card) {
-
-        String text;
-        if (card == 1) {
-            text = firstCard.getText();
-        } else if (card == 2) {
-            text = secondCard.getText();
-        } else {
-            throw new IllegalArgumentException("Несуществующий номер карты: " + card);
-        }
+        String text = cards.get(card-1).getText();
         return extractBalance(text);
     }
 
     public TransferPage cardSelection(int card) {
 
-        if (card == 1) {
-            firstCardChoice.click();
-        } else if (card == 2) {
-            secondCardChoice.click();
-        } else {
-            throw new IllegalArgumentException("Несуществующий номер карты: " + card);
-        }
+        cards.get(card-1).find("[data-test-id='action-deposit']").click();
         return new TransferPage();
     }
 
